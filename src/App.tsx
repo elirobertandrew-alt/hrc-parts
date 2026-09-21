@@ -4,8 +4,6 @@ import { addCartItem, cartCount, cartSubtotalCents, formatMoney, parsePriceCents
 import './App.css'
 import './checkout.css'
 
-const ebayStore = 'https://www.ebay.com/usr/hondapartscencoast'
-
 function SearchIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
 }
@@ -33,15 +31,36 @@ function App() {
   const subtotal = cartSubtotalCents(cart, products)
 
   useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
+    if (!cartOpen && !checkoutOpen) return
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const dialog = document.querySelector<HTMLElement>(checkoutOpen ? '.checkout-modal' : '.cart-drawer')
+    const page = Array.from(document.querySelectorAll<HTMLElement>('.topbar, .header, main, footer'))
+    page.forEach((element) => element.setAttribute('inert', ''))
+    document.body.style.overflow = 'hidden'
+    const focusable = () => Array.from(dialog?.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled])') ?? [])
+    focusable()[0]?.focus()
+    const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setCheckoutOpen(false)
-        setCartOpen(false)
+        if (checkoutOpen) setCheckoutOpen(false)
+        else setCartOpen(false)
+      }
+      if (event.key === 'Tab') {
+        const controls = focusable()
+        const first = controls[0]
+        const last = controls.at(-1)
+        if (!first || !last) return
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
       }
     }
-    window.addEventListener('keydown', closeOnEscape)
-    return () => window.removeEventListener('keydown', closeOnEscape)
-  }, [])
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      window.removeEventListener('keydown', handleKey)
+      page.forEach((element) => element.removeAttribute('inert'))
+      document.body.style.overflow = ''
+      opener?.focus()
+    }
+  }, [cartOpen, checkoutOpen])
 
   const jumpToCatalog = (next: 'All parts' | Category) => {
     setCategory(next)
@@ -105,11 +124,11 @@ function App() {
         <section className="fitment-section" id="fitment">
           <div><p className="section-kicker">BUY ONCE. FIT ONCE.</p><h2>Fitment is not a guessing game.</h2></div>
           <div className="fitment-steps"><article><span>01</span><h3>Read the fitment line</h3><p>Every card surfaces the vehicle, chassis, engine, or years found in the live listing.</p></article><article><span>02</span><h3>Review the details</h3><p>Confirm trim, transmission, body style, condition, and included hardware before checkout.</p></article><article><span>03</span><h3>Ask before ordering</h3><p>Not certain? Contact HRC with your year, model, trim, and engine before placing an order.</p></article></div>
-          <a className="primary" href={`${ebayStore}#contact`} target="_blank" rel="noreferrer">Contact HRC on eBay ↗</a>
+          <button className="primary" type="button" onClick={() => jumpToCatalog('All parts')}>Browse fitment-listed parts</button>
         </section>
       </main>
 
-      <footer><a className="footer-brand" href="#top"><img src="/hrc-logo.png" alt="HRC" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href={ebayStore} target="_blank" rel="noreferrer">Source inventory ↗</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small></footer>
+      <footer><a className="footer-brand" href="#top"><img src="/hrc-logo.png" alt="HRC" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href="#top">Home</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small></footer>
 
       {cartOpen && <div className="drawer-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <div className="drawer-header"><div><p className="section-kicker">YOUR BUILD LIST</p><h2 id="cart-title">Cart <span>{itemCount}</span></h2></div><button className="close-button" type="button" onClick={() => setCartOpen(false)} aria-label="Close cart">×</button></div>
@@ -120,7 +139,7 @@ function App() {
         {orderComplete ? <div className="order-complete"><span>✓</span><p className="section-kicker">PREVIEW COMPLETE</p><h2 id="checkout-title">Checkout flow is ready.</h2><p>No order was created and no payment was processed. Stripe can be connected to this final step later.</p><button className="primary" type="button" onClick={() => setCheckoutOpen(false)}>Return to store</button></div> : <form onSubmit={finishMockOrder}><div className="checkout-heading"><p className="section-kicker">SECURE CHECKOUT PREVIEW</p><h2 id="checkout-title">Complete your build.</h2><p className="mock-notice"><b>Mock mode</b> No card will be charged and no order will be submitted.</p></div><div className="checkout-grid"><div className="checkout-fields">
           <fieldset><legend>Contact</legend><label>Email<input required type="email" placeholder="driver@example.com" autoComplete="email" /></label></fieldset>
           <fieldset><legend>Shipping</legend><div className="field-pair"><label>First name<input required autoComplete="given-name" /></label><label>Last name<input required autoComplete="family-name" /></label></div><label>Address<input required autoComplete="street-address" /></label><div className="field-pair three"><label>City<input required autoComplete="address-level2" /></label><label>State<input required autoComplete="address-level1" maxLength={2} /></label><label>ZIP<input required inputMode="numeric" autoComplete="postal-code" /></label></div></fieldset>
-          <fieldset className="mock-payment"><legend>Payment</legend><p>Stripe-ready placeholder</p><label>Name on card<input required placeholder="Test Driver" autoComplete="off" /></label><label>Card number<input required inputMode="numeric" placeholder="4242 4242 4242 4242" pattern="[0-9 ]{15,19}" autoComplete="off" /></label><div className="field-pair"><label>Expiration<input required placeholder="12 / 30" autoComplete="off" /></label><label>CVC<input required placeholder="123" inputMode="numeric" autoComplete="off" /></label></div></fieldset>
+          <fieldset className="mock-payment"><legend>Payment</legend><p>Stripe-ready visual placeholder — test values only</p><label>Name on card<input disabled value="TEST CHECKOUT ONLY" aria-label="Mock cardholder name" /></label><label>Card number<input disabled value="•••• •••• •••• 4242" aria-label="Mock card number ending in 4242" /></label><div className="field-pair"><label>Expiration<input disabled value="12 / 30" aria-label="Mock expiration date" /></label><label>CVC<input disabled value="•••" aria-label="Mock security code" /></label></div></fieldset>
         </div><aside className="checkout-order"><h3>Order summary</h3>{cartItems.map(({ product, quantity }) => <div className="checkout-line" key={product.id}><div><img src={product.image} alt="" /><span>{quantity}</span></div><p>{product.title}</p><strong>{formatMoney(parsePriceCents(product.price) * quantity)}</strong></div>)}<dl><div><dt>Subtotal</dt><dd>{formatMoney(subtotal)}</dd></div><div><dt>Shipping</dt><dd>Calculated later</dd></div><div><dt>Tax</dt><dd>Calculated later</dd></div><div className="total"><dt>Preview total</dt><dd>{formatMoney(subtotal)}</dd></div></dl><button className="primary pay-button" type="submit">Complete mock order</button><small>Demonstration only. Nothing is charged or stored.</small></aside></div></form>}
       </section></div>}
     </div>

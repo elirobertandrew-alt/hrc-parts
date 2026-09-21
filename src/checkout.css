@@ -43,6 +43,7 @@
 .checkout-fields label { display: grid; gap: 6px; color: #555; font-size: 11px; font-weight: 700; text-transform: uppercase; }
 .checkout-fields input { width: 100%; height: 48px; border: 1px solid #bbb; border-radius: 0; background: #fff; padding: 0 13px; color: #111; font: 14px Inter; }
 .checkout-fields input:focus { outline: 2px solid var(--red); outline-offset: 1px; }
+.checkout-fields input:disabled { border-color: #c6c3bc; background: #ddd9d1; color: #4f5053; cursor: not-allowed; opacity: 1; }
 .field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .field-pair.three { grid-template-columns: 1.4fr .6fr .7fr; }
 .mock-payment { padding: 22px !important; border: 1px dashed #a9a6a0 !important; background: #eae8e2; }
