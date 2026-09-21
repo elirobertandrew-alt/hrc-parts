@@ -83,7 +83,7 @@ function App() {
     <div className="site-shell">
       <div className="topbar">Genuine OEM & hard-to-find Honda / Acura parts <span>•</span> Secure checkout preview</div>
       <header className="header">
-        <a className="brand" href="#top" aria-label="HRC Parts home"><img src="/hrc-logo.png" alt="HRC" /></a>
+        <a className="brand" href="#top" aria-label="Honda Parts Central Coast home"><img src="/hpcc-logo.png" alt="Honda Parts Central Coast" /></a>
         <button className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="main-nav" onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
         <nav id="main-nav" className={menuOpen ? 'nav open' : 'nav'} aria-label="Main navigation">
           <button onClick={() => jumpToCatalog('All parts')}>All parts</button>
@@ -128,7 +128,7 @@ function App() {
         </section>
       </main>
 
-      <footer><a className="footer-brand" href="#top"><img src="/hrc-logo.png" alt="HRC" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href="#top">Home</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small></footer>
+      <footer><a className="footer-brand" href="#top"><img src="/hpcc-logo.png" alt="Honda Parts Central Coast" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href="#top">Home</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small></footer>
 
       {cartOpen && <div className="drawer-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <div className="drawer-header"><div><p className="section-kicker">YOUR BUILD LIST</p><h2 id="cart-title">Cart <span>{itemCount}</span></h2></div><button className="close-button" type="button" onClick={() => setCartOpen(false)} aria-label="Close cart">×</button></div>
