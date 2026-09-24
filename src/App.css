@@ -99,9 +99,8 @@
 .fitment-steps p { color: rgba(255,255,255,.75); font-size: 13px; line-height: 1.7; }
 .fitment-section .primary { background: white; color: var(--blue); border-color: white; }
 
-footer { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; padding: 65px 5vw 35px; background: #08090b; border-top: 1px solid var(--line); position: relative; overflow: hidden; isolation: isolate; min-height: calc((80vw * 330 / 878) + 48px); }
-.footer-watermark { position: absolute; left: 50%; top: 50%; width: 80%; height: auto; transform: translate(-50%, -50%); object-fit: contain; pointer-events: none; user-select: none; z-index: 0; }
-footer p, footer > div, footer small { position: relative; z-index: 1; }
+footer { display: grid; grid-template-columns: 180px 1fr 1fr; gap: 40px; align-items: start; padding: 65px 5vw 35px; background: #08090b; border-top: 1px solid var(--line); }
+.footer-brand img { width: 170px; height: auto; }
 footer p { margin: 0; color: #9699a0; font-size: 12px; line-height: 1.65; }
 footer > div { justify-self: end; display: flex; gap: 25px; }
 footer > div a { color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; }
