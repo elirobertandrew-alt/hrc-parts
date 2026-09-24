@@ -49,7 +49,7 @@ function App() {
             <h1>Keep the icons <em>on the road.</em></h1>
             <p className="hero-lede">Curated OEM, rare, and performance parts for the Honda and Acura chassis that built the scene.</p>
             <div className="hero-actions"><button className="primary" onClick={() => jumpToCatalog('All parts')}>Browse all parts</button><a className="secondary" href="#fitment">How fitment works</a></div>
-            <a className="hero-instagram" href={instagram} target="_blank" rel="noreferrer">honda_parts_centralcoast</a>
+            <a className="hero-instagram" href={instagram} target="_blank" rel="noreferrer">Instagram: @honda_parts_centralcoast</a>
             <dl className="trust-row"><div><dt>48</dt><dd>live listings</dd></div><div><dt>100%</dt><dd>positive feedback</dd></div><div><dt>eBay</dt><dd>secure checkout</dd></div></dl>
           </div>
           <div className="hero-visual" aria-hidden="true"><div className="speed-lines" /><span className="hero-number">90s</span><div className="part-collage"><img src={products[0].image} alt="" /><img src={products[8].image} alt="" /><img src={products[1].image} alt="" /></div><span className="stamp">OEM • RARE • REAL</span></div>
