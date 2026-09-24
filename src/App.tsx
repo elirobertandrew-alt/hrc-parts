@@ -128,7 +128,12 @@ function App() {
         </section>
       </main>
 
-      <footer><a className="footer-brand" href="#top"><img src="/hpcc-logo.png" alt="Honda Parts Central Coast" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href="#top">Home</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small></footer>
+      <footer>
+        <img className="footer-watermark" src="/hpcc-logo-watermark.png" alt="" aria-hidden="true" />
+        <p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p>
+        <div><a href="#top">Home</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div>
+        <small>© 2026 HRC Parts. Checkout is a non-charging preview until a payment processor is connected.</small>
+      </footer>
 
       {cartOpen && <div className="drawer-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false) }}><aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <div className="drawer-header"><div><p className="section-kicker">YOUR BUILD LIST</p><h2 id="cart-title">Cart <span>{itemCount}</span></h2></div><button className="close-button" type="button" onClick={() => setCartOpen(false)} aria-label="Close cart">×</button></div>
