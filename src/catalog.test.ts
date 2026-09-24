@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { products } from './catalog'
+import { CATALOG_PAGE_COUNT, paginateCatalog, products } from './catalog'
 
 describe('eBay listing catalog', () => {
   it('gives every part its own live eBay listing URL', () => {
@@ -25,6 +25,19 @@ describe('eBay listing catalog', () => {
       expect(existsSync(new URL(`../public${product.image}`, import.meta.url))).toBe(true)
     }
   })
+
+  it('splits the live inventory across three pages without dropping or repeating a part', () => {
+    expect(CATALOG_PAGE_COUNT).toBe(3)
+    const pages = [1, 2, 3].map((page) => paginateCatalog(products, page))
+    const ids = pages.flatMap((page) => page.items.map((product) => product.id))
+    expect(pages.every((page) => page.pageCount === 3)).toBe(true)
+    expect(ids).toEqual(products.map((product) => product.id))
+    expect(new Set(ids).size).toBe(products.length)
+    expect(pages[0].items.length).toBe(Math.ceil(products.length / 3))
+    expect(pages[2].items.length).toBeGreaterThan(0)
+    expect(paginateCatalog(products, 99).page).toBe(3)
+    expect(paginateCatalog(products, 0).page).toBe(1)
+  })
 })
 
 describe('storefront without an eBay API key', () => {
@@ -33,6 +46,8 @@ describe('storefront without an eBay API key', () => {
   it('sends each part to its eBay listing instead of an on-site cart', () => {
     expect(app).toContain('{products.length}')
     expect(app).not.toContain('<dt>48</dt>')
+    expect(app).toContain('catalog-pager')
+    expect(app).toContain('paginateCatalog')
     expect(app).toContain('View on eBay')
     expect(app).toContain('product.url')
     expect(app).not.toContain('Add to cart')

@@ -934,6 +934,22 @@ export const products: Product[] = source.map((item) => ({
   condition: /\bnew\b/i.test(item.title) ? 'New' : /\bused\b/i.test(item.title) ? 'Used' : 'See listing',
 }))
 
+export const CATALOG_PAGE_COUNT = 3
+
+export function paginateCatalog<T>(items: readonly T[], requestedPage: number, pageCount = CATALOG_PAGE_COUNT) {
+  const requestedPages = Math.max(1, pageCount)
+  const size = Math.ceil(items.length / requestedPages) || 1
+  const pages = Math.max(1, Math.ceil(items.length / size) || 1)
+  const page = Math.min(pages, Math.max(1, requestedPage))
+  const start = (page - 1) * size
+  return {
+    page,
+    pageCount: pages,
+    pageSize: size,
+    items: items.slice(start, start + size),
+  }
+}
+
 export const categories: Category[] = [
   'Engine & Performance',
   'Electronics & Controls',

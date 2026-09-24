@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { categories, products, type Category } from './catalog'
+import { categories, paginateCatalog, products, type Category } from './catalog'
 import './App.css'
 
 const ebayStore = 'https://www.ebay.com/usr/hondapartscencoast'
@@ -13,6 +13,7 @@ function App() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<'All parts' | Category>('All parts')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [page, setPage] = useState(1)
 
   const visible = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'All parts' || product.category === category
@@ -20,9 +21,17 @@ function App() {
     return matchesCategory && haystack.includes(query.trim().toLowerCase())
   }), [category, query])
 
+  const catalogPage = useMemo(() => paginateCatalog(visible, page), [page, visible])
+
   const jumpToCatalog = (next: 'All parts' | Category) => {
     setCategory(next)
+    setPage(1)
     setMenuOpen(false)
+    document.querySelector('#catalog')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const showPage = (next: number) => {
+    setPage(next)
     document.querySelector('#catalog')?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -57,16 +66,25 @@ function App() {
 
         <section className="chassis-strip" aria-labelledby="shop-chassis">
           <div><p className="section-kicker">START WITH WHAT YOU DRIVE</p><h2 id="shop-chassis">Shop by chassis</h2></div>
-          <div className="chassis-list">{[['Civic','EG · EK · EM1 · 8th Gen'],['Integra','DA · DC2 · DC4 · DB8'],['TSX','CL9 · CU2'],['CR-V','RD1 · RD2'],['Other','Prelude · Del Sol · CRX · RSX · Miata']].map(([name, detail]) => <button key={name} onClick={() => { setQuery(name); jumpToCatalog('All parts') }}><strong>{name}</strong><span>{detail}</span><b aria-hidden="true">→</b></button>)}</div>
+          <div className="chassis-list">{[['Civic','EG · EK · EM1 · 8th Gen'],['Integra','DA · DC2 · DC4 · DB8'],['TSX','CL9 · CU2'],['CR-V','RD1 · RD2'],['Other','Prelude · Del Sol · CRX · RSX · Miata']].map(([name, detail]) => <button key={name} onClick={() => { setQuery(name); setPage(1); jumpToCatalog('All parts') }}><strong>{name}</strong><span>{detail}</span><b aria-hidden="true">→</b></button>)}</div>
         </section>
 
         <section className="catalog" id="catalog" aria-labelledby="catalog-title">
           <div className="catalog-heading"><div><p className="section-kicker">CURRENT INVENTORY</p><h2 id="catalog-title">Parts with a past.<br/>Ready for the next build.</h2></div><p>Real inventory from the HRC eBay store. Availability, condition details, shipping, and final checkout are handled on eBay.</p></div>
-          <div className="catalog-tools"><label className="search"><span className="sr-only">Search inventory</span><SearchIcon/><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search chassis, engine, or part…"/><kbd>{visible.length}</kbd></label><div className="filters" aria-label="Filter by category">{(['All parts', ...categories] as const).map((item) => <button key={item} className={category === item ? 'active' : ''} onClick={() => setCategory(item)}>{item}</button>)}</div></div>
-          {visible.length ? <div className="product-grid">{visible.map((product) => <article className="product-card" key={product.id}>
-            <a className="product-image" href={product.url} target="_blank" rel="noreferrer" aria-label={`View ${product.condition}: ${product.title} on eBay`}><img src={product.image} alt="" width="720" height="720" /><span>{product.condition}</span></a>
-            <div className="product-content"><p className="product-category">{product.category}</p><h3><a href={product.url} target="_blank" rel="noreferrer">{product.title}</a></h3><div className="fitment"><b>Fits</b><span>{product.fitment}</span></div><div className="product-footer"><strong>{product.price}</strong><a href={product.url} target="_blank" rel="noreferrer">View on eBay <span aria-hidden="true">↗</span></a></div></div>
-          </article>)}</div> : <div className="empty"><h3>No exact matches.</h3><p>Try a chassis such as Civic, Integra, TSX, or CR-V.</p><button onClick={() => { setQuery(''); setCategory('All parts') }}>Reset inventory</button></div>}
+          <div className="catalog-tools"><label className="search"><span className="sr-only">Search inventory</span><SearchIcon/><input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Search chassis, engine, or part…"/><kbd>{visible.length}</kbd></label><div className="filters" aria-label="Filter by category">{(['All parts', ...categories] as const).map((item) => <button key={item} className={category === item ? 'active' : ''} onClick={() => { setCategory(item); setPage(1) }}>{item}</button>)}</div></div>
+          {visible.length ? <>
+            <div className="product-grid">{catalogPage.items.map((product) => <article className="product-card" key={product.id}>
+              <a className="product-image" href={product.url} target="_blank" rel="noreferrer" aria-label={`View ${product.condition}: ${product.title} on eBay`}><img src={product.image} alt="" width="720" height="720" /><span>{product.condition}</span></a>
+              <div className="product-content"><p className="product-category">{product.category}</p><h3><a href={product.url} target="_blank" rel="noreferrer">{product.title}</a></h3><div className="fitment"><b>Fits</b><span>{product.fitment}</span></div><div className="product-footer"><strong>{product.price}</strong><a href={product.url} target="_blank" rel="noreferrer">View on eBay <span aria-hidden="true">↗</span></a></div></div>
+            </article>)}</div>
+            <nav className="catalog-pager" aria-label="Inventory pages">
+              <button type="button" disabled={catalogPage.page === 1} onClick={() => showPage(catalogPage.page - 1)}>Previous</button>
+              {Array.from({ length: catalogPage.pageCount }, (_, index) => index + 1).map((number) => (
+                <button key={number} type="button" className={catalogPage.page === number ? 'active' : ''} aria-current={catalogPage.page === number ? 'page' : undefined} onClick={() => showPage(number)}>{number}</button>
+              ))}
+              <button type="button" disabled={catalogPage.page === catalogPage.pageCount} onClick={() => showPage(catalogPage.page + 1)}>Next</button>
+            </nav>
+          </> : <div className="empty"><h3>No exact matches.</h3><p>Try a chassis such as Civic, Integra, TSX, or CR-V.</p><button onClick={() => { setQuery(''); setCategory('All parts'); setPage(1) }}>Reset inventory</button></div>}
         </section>
 
         <section className="fitment-section" id="fitment">
