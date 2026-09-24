@@ -50,14 +50,14 @@ function App() {
             <p className="hero-lede">Curated OEM, rare, and performance parts for the Honda and Acura chassis that built the scene.</p>
             <div className="hero-actions"><button className="primary" onClick={() => jumpToCatalog('All parts')}>Browse all parts</button><a className="secondary" href="#fitment">How fitment works</a></div>
             <a className="hero-instagram" href={instagram} target="_blank" rel="noreferrer">Instagram: @honda_parts_centralcoast</a>
-            <dl className="trust-row"><div><dt>48</dt><dd>live listings</dd></div><div><dt>100%</dt><dd>positive feedback</dd></div><div><dt>eBay</dt><dd>secure checkout</dd></div></dl>
+            <dl className="trust-row"><div><dt>{products.length}</dt><dd>live listings</dd></div><div><dt>100%</dt><dd>positive feedback</dd></div><div><dt>eBay</dt><dd>secure checkout</dd></div></dl>
           </div>
           <div className="hero-visual" aria-hidden="true"><div className="speed-lines" /><span className="hero-number">90s</span><div className="part-collage"><img src={products[0].image} alt="" /><img src={products[8].image} alt="" /><img src={products[1].image} alt="" /></div><span className="stamp">OEM • RARE • REAL</span></div>
         </section>
 
         <section className="chassis-strip" aria-labelledby="shop-chassis">
           <div><p className="section-kicker">START WITH WHAT YOU DRIVE</p><h2 id="shop-chassis">Shop by chassis</h2></div>
-          <div className="chassis-list">{[['Civic','EG · EK · EM1 · 8th Gen'],['Integra','DA · DC2 · DC4 · DB8'],['TSX','CL9 · CU2'],['CR-V','RD1 · RD2'],['Other','Prelude · Del Sol · Miata']].map(([name, detail]) => <button key={name} onClick={() => { setQuery(name); jumpToCatalog('All parts') }}><strong>{name}</strong><span>{detail}</span><b aria-hidden="true">→</b></button>)}</div>
+          <div className="chassis-list">{[['Civic','EG · EK · EM1 · 8th Gen'],['Integra','DA · DC2 · DC4 · DB8'],['TSX','CL9 · CU2'],['CR-V','RD1 · RD2'],['Other','Prelude · Del Sol · CRX · RSX · Miata']].map(([name, detail]) => <button key={name} onClick={() => { setQuery(name); jumpToCatalog('All parts') }}><strong>{name}</strong><span>{detail}</span><b aria-hidden="true">→</b></button>)}</div>
         </section>
 
         <section className="catalog" id="catalog" aria-labelledby="catalog-title">
