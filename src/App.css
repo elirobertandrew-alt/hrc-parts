@@ -88,7 +88,7 @@
 .catalog-pager button { min-height: 48px; padding: 0; border: 0; background: transparent; color: #64666c; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
 .catalog-pager button.active { color: #111216; }
 .catalog-pager button:hover:not(:disabled) { color: var(--red); }
-.catalog-pager button:disabled { opacity: .4; cursor: not-allowed; }
+.catalog-pager button:disabled { opacity: .4; cursor: default; pointer-events: none; }
 .empty { padding: 90px 20px; text-align: center; border: 1px solid #ccc; }
 .empty h3 { font-family: 'Barlow Condensed'; font-size: 36px; text-transform: uppercase; margin: 0; }
 .empty p { color: #666; }
