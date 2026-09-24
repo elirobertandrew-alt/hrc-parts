@@ -1,6 +1,8 @@
 .site-shell { overflow: hidden; }
 .topbar { padding: 9px 5vw; text-align: center; background: #d50f20; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .topbar span { margin: 0 .55rem; }
+.topbar a { color: inherit; text-decoration: none; text-transform: none; letter-spacing: .04em; }
+.topbar a:hover { text-decoration: underline; }
 .header { height: 82px; padding: 0 max(4vw, 28px); display: grid; grid-template-columns: 190px 1fr 190px; align-items: center; border-bottom: 1px solid var(--line); background: rgba(8,9,11,.96); position: relative; z-index: 20; }
 .brand img { display: block; width: 170px; max-height: 68px; object-fit: contain; object-position: left center; }
 .nav { display: flex; justify-content: center; gap: clamp(18px, 2.4vw, 42px); }

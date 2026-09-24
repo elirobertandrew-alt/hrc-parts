@@ -3,6 +3,7 @@ import { categories, products, type Category } from './catalog'
 import './App.css'
 
 const ebayStore = 'https://www.ebay.com/usr/hondapartscencoast'
+const instagram = 'https://www.instagram.com/honda_parts_centralcoast'
 
 function SearchIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
@@ -27,7 +28,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      <div className="topbar">Genuine OEM & hard-to-find Honda / Acura parts <span>•</span> Every item ships through eBay</div>
+      <div className="topbar">Genuine OEM & hard-to-find Honda / Acura parts <span>•</span> Every item ships through eBay <span>•</span> <a href={instagram} target="_blank" rel="noreferrer">honda_parts_centralcoast</a></div>
       <header className="header">
         <a className="brand" href="#top" aria-label="Honda Parts Central Coast home"><img src="/hpcc-logo.png" alt="Honda Parts Central Coast" /></a>
         <button className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="main-nav" onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
