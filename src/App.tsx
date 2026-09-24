@@ -75,7 +75,12 @@ function App() {
         </section>
       </main>
 
-      <footer><a className="footer-brand" href="#top"><img src="/hpcc-logo.png" alt="Honda Parts Central Coast" /></a><p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p><div><a href={ebayStore} target="_blank" rel="noreferrer">eBay store ↗</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div><small>© 2026 HRC Parts. Purchases, payments, shipping, and returns are completed on eBay.</small></footer>
+      <footer>
+        <p>Honda & Acura OEM, rare, and performance parts.<br/>Independent seller. Not affiliated with Honda Motor Co.</p>
+        <div><a href={ebayStore} target="_blank" rel="noreferrer">eBay store ↗</a><a href="#fitment">Fitment help</a><a href="#catalog">Inventory</a></div>
+        <a className="footer-mark" href="#top" aria-label="Honda Parts Central Coast home"><img src="/hpcc-footer.png" alt="HPCC" width="1400" height="467" /></a>
+        <small>© 2026 HRC Parts. Purchases, payments, shipping, and returns are completed on eBay.</small>
+      </footer>
     </div>
   )
 }

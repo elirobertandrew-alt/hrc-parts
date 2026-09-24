@@ -101,12 +101,13 @@
 .fitment-steps p { color: rgba(255,255,255,.75); font-size: 13px; line-height: 1.7; }
 .fitment-section .primary { background: white; color: var(--blue); border-color: white; }
 
-footer { display: grid; grid-template-columns: 180px 1fr 1fr; gap: 40px; align-items: start; padding: 65px 5vw 35px; background: #08090b; border-top: 1px solid var(--line); }
-.footer-brand img { width: 170px; height: auto; }
+footer { display: grid; grid-template-columns: 1fr auto; gap: 18px 40px; align-items: start; padding: 40px 5vw 28px; background: #08090b; border-top: 1px solid var(--line); }
 footer p { margin: 0; color: #9699a0; font-size: 12px; line-height: 1.65; }
 footer > div { justify-self: end; display: flex; gap: 25px; }
 footer > div a { color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-footer small { grid-column: 1 / -1; padding-top: 30px; margin-top: 25px; border-top: 1px solid var(--line); color: #5f626a; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.footer-mark { grid-column: 1 / -1; width: 78%; justify-self: center; display: block; }
+.footer-mark img { display: block; width: 100%; height: auto; }
+footer small { grid-column: 1 / -1; padding-top: 18px; margin-top: 8px; border-top: 1px solid var(--line); color: #5f626a; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
 
 @media (max-width: 1100px) {
   .product-grid { grid-template-columns: repeat(3, 1fr); }
@@ -152,8 +153,9 @@ footer small { grid-column: 1 / -1; padding-top: 30px; margin-top: 25px; border-
   .fitment-section > div:first-child { grid-template-columns: 1fr; }
   .fitment-steps { grid-template-columns: 1fr; }
   .fitment-steps article, .fitment-steps article + article { padding: 27px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.3); }
-  footer { grid-template-columns: 1fr; padding: 55px 22px 28px; }
+  footer { grid-template-columns: 1fr; padding: 40px 22px 24px; }
   footer > div { justify-self: start; flex-wrap: wrap; }
+  .footer-mark { width: 92%; }
   footer small { grid-column: auto; }
 }
 @media (max-width: 430px) {
